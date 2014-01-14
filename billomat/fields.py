@@ -33,7 +33,7 @@ class DateField(base.Field):
         if value is None:
             return None
         try:
-            return parse(value)
+            return parse(value).date()
         except Exception:
             raise base.BillomatValidationException(
                 'invalid value for datetime field (%s): "%s"' % (
