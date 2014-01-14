@@ -331,8 +331,8 @@ class Invoice(base.Model):
     payment_types = fields.ListOfFloatField()
 
     class Meta:
-        resource = 'recurrings'
-        object_name = 'recurring'
+        resource = 'invoices'
+        object_name = 'invoice'
         filters = (
             'id',
             'since',
@@ -557,8 +557,8 @@ class Reminder(base.Model):
     is_old = fields.IntegerField(read_only=True)
 
     class Meta:
-        resource = 'credit-notes'
-        object_name = 'credit-note'
+        resource = 'reminders'
+        object_name = 'reminder'
         filters = (
             'id',
             'since',
