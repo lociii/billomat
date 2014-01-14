@@ -1,0 +1,5 @@
+requests==2.1.0
+six==1.4.1
+python-dateutil==2.2
+httmock==1.0.7
+mock==1.0.1
