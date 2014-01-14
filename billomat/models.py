@@ -25,6 +25,7 @@ class Article(base.Model):
         object_name = 'article'
         filters = (
             'id',
+            'since',
             'article_number',
             'title',
             'description',
@@ -51,6 +52,7 @@ class ArticleProperty(base.Model):
         object_name = 'article-property'
         filters = (
             'id',
+            'since',
             'article_id',
         )
 
@@ -68,6 +70,7 @@ class ArticlePropertyValue(base.Model):
         object_name = 'article-property-value'
         filters = (
             'id',
+            'since',
             'article_id',
         )
 
@@ -158,6 +161,7 @@ class Client(base.Model):
         object_name = 'client'
         filters = (
             'id',
+            'since',
             'name',
             'client_number',
             'email',
@@ -170,7 +174,7 @@ class Client(base.Model):
         )
 
 
-class Recurrings(base.Model):
+class Recurring(base.Model):
     id = fields.IntegerField(read_only=True)
     created = fields.DateTimeField(read_only=True)
     client_id = fields.IntegerField()
@@ -234,6 +238,7 @@ class Recurrings(base.Model):
         object_name = 'recurring'
         filters = (
             'id',
+            'since',
             'client_id',
             'contact_id',
             'name',
@@ -269,6 +274,7 @@ class RecurringItem(base.Model):
         object_name = 'recurring-item'
         filters = (
             'id',
+            'since',
             'recurring_id',
         )
 
@@ -329,6 +335,7 @@ class Invoice(base.Model):
         object_name = 'recurring'
         filters = (
             'id',
+            'since',
             'client_id',
             'contact_id',
             'invoice_number',
@@ -366,6 +373,7 @@ class InvoiceItem(base.Model):
         object_name = 'invoice-item'
         filters = (
             'id',
+            'since',
             'invoice_id',
         )
 
@@ -393,6 +401,7 @@ class InvoiceComment(base.Model):
         object_name = 'invoice-comment'
         filters = (
             'id',
+            'since',
             'invoice_id',
         )
 
@@ -418,6 +427,7 @@ class InvoicePayment(base.Model):
         object_name = 'invoice-payment'
         filters = (
             'id',
+            'since',
             'invoice_id',
             'from',
             'to',
@@ -467,6 +477,7 @@ class CreditNote(base.Model):
         object_name = 'credit-note'
         filters = (
             'id',
+            'since',
             'client_id',
             'contact_id',
             'credit_note_number',
@@ -503,6 +514,7 @@ class CreditNoteItem(base.Model):
         object_name = 'credit-note-item'
         filters = (
             'id',
+            'since',
             'credit_note_id',
         )
 
@@ -517,6 +529,7 @@ class CreditNoteTag(base.Model):
         object_name = 'credit-note-tag'
         filters = (
             'id',
+            'since',
             'credit_note_id',
         )
 
@@ -548,6 +561,7 @@ class Reminder(base.Model):
         object_name = 'credit-note'
         filters = (
             'id',
+            'since',
             'client_id',
             'contact_id',
             'invoice_number',

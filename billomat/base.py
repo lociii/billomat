@@ -141,7 +141,7 @@ class QuerySetIterator(object):
         if (
             self.total is None
             or
-            len(self._result_cache) < self._position < self.total
+            len(self._result_cache) <= self._position < self.total
         ):
             self.get_page()
 

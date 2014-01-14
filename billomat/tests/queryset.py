@@ -16,7 +16,7 @@ FIXTURE_PARAMS = {
 }
 
 
-class TestClient(unittest.TestCase):
+class TestQueryset(unittest.TestCase):
     def _get_object_manager(self):
         return base.ObjectManager(
             'resource',
@@ -30,10 +30,10 @@ class TestClient(unittest.TestCase):
         objectmanager.validate_kwargs = Mock(return_value=True)
         queryset = base.QuerySet(objectmanager)
 
-        queryset.filter(**FIXTURE_PARAMS_1)
+        queryset = queryset.filter(**FIXTURE_PARAMS_1)
         self.assertEqual(queryset.params, FIXTURE_PARAMS_1)
 
-        queryset.filter(**FIXTURE_PARAMS_2)
+        queryset = queryset.filter(**FIXTURE_PARAMS_2)
         self.assertEqual(queryset.params, FIXTURE_PARAMS)
 
     def testCount(self):
