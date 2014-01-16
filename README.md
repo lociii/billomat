@@ -20,7 +20,7 @@ for article in articles:
     print unicode(article.title)
 
 article = models.Article.objects.get(article_number=2)
-article.title = 'This is an awesome article'
+article.title = u'This is an awesome article'
 article.save()
 
 article = models.Article.objects.create(
@@ -28,11 +28,6 @@ article = models.Article.objects.create(
 )
 article.delete()
 ```
-
-ToDo
------
-* Implement remaining models
-* Support sorting
 
 License
 --------
