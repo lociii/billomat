@@ -375,7 +375,11 @@ class Model(six.with_metaclass(ModelBase)):
 
         if response:
             for name, value in response[self.objects.object_name].items():
-                self.fields[name].init_value(value)
+                try:
+                    self.fields[name].init_value(value)
+                except KeyError:
+                    # ignore additional fields from api
+                    pass
 
     def delete(self):
         dataset_id = self.fields['id'].value
