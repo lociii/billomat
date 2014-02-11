@@ -346,7 +346,7 @@ class Model(six.with_metaclass(ModelBase)):
 
         for field in self.fields.values():
             if not field.read_only and field.value != field.EMPTY_VALUE:
-                data[field.name] = field.value.to_json()
+                data[field.name] = field.to_json()
             if field.is_dirty:
                 dirty[field.name] = field.to_json()
             if field.name == 'id':
