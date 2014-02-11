@@ -1,10 +1,14 @@
 # -*- coding: UTF-8 -*-
+import datetime
 from dateutil.parser import parse
 from . import base
 
 
 class StringField(base.Field):
     def to_python(self, value):
+        if isinstance(value, unicode):
+            return value
+
         if value is None:
             return None
         return unicode(value)
@@ -12,6 +16,9 @@ class StringField(base.Field):
 
 class DateTimeField(base.Field):
     def to_python(self, value):
+        if isinstance(value, datetime.datetime):
+            return value
+
         if value is None:
             return None
         try:
@@ -30,6 +37,9 @@ class DateTimeField(base.Field):
 
 class DateField(base.Field):
     def to_python(self, value):
+        if isinstance(value, datetime.date):
+            return value
+
         if value is None:
             return None
         try:
@@ -56,6 +66,9 @@ class URLField(StringField):
 
 class BooleanField(base.Field):
     def to_python(self, value):
+        if isinstance(value, bool):
+            return value
+
         return bool(value)
 
     def to_json(self):
@@ -66,6 +79,9 @@ class BooleanField(base.Field):
 
 class FloatField(base.Field):
     def to_python(self, value):
+        if isinstance(value, float):
+            return value
+
         if value == self.EMPTY_VALUE:
             if self.required:
                 raise base.BillomatValidationException(
@@ -88,6 +104,9 @@ class FloatField(base.Field):
 
 class IntegerField(base.Field):
     def to_python(self, value):
+        if isinstance(value, int):
+            return value
+
         if value == self.EMPTY_VALUE:
             if self.required:
                 raise base.BillomatValidationException(
