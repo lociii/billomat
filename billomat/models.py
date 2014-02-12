@@ -371,6 +371,7 @@ class InvoicePdf(base.Model):
     class Meta:
         resource = 'invoices/%s/pdf'
         object_name = 'pdf'
+        filters = ()
 
 
 class InvoiceItem(base.Model):
@@ -535,6 +536,7 @@ class CreditNotePdf(base.Model):
     class Meta:
         resource = 'credit-notes/%s/pdf'
         object_name = 'pdf'
+        filters = ()
 
 
 class CreditNoteItem(base.Model):
