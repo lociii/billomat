@@ -349,6 +349,29 @@ class Invoice(base.Model):
             'tags',
         )
 
+    def get_pdf(self):
+        assert isinstance(self.objects, base.ObjectManager)
+
+        result = self.objects.client.query(
+            resource=InvoicePdf.objects.resource % self.id.value,
+            method=base.Client.METHOD_GET
+        )[InvoicePdf.objects.object_name]
+        return InvoicePdf(**result)
+
+
+class InvoicePdf(base.Model):
+    id = fields.IntegerField(read_only=True)
+    created = fields.DateTimeField(read_only=True)
+    invoice_id = fields.IntegerField(read_only=True)
+    filename = fields.StringField(read_only=True)
+    mimetype = fields.StringField(read_only=True)
+    filesize = fields.IntegerField(read_only=True)
+    base64file = fields.StringField(read_only=True)
+
+    class Meta:
+        resource = 'invoices/%s/pdf'
+        object_name = 'pdf'
+
 
 class InvoiceItem(base.Model):
     id = fields.IntegerField(read_only=True)
@@ -489,6 +512,29 @@ class CreditNote(base.Model):
             'note',
             'tags',
         )
+
+    def get_pdf(self):
+        assert isinstance(self.objects, base.ObjectManager)
+
+        result = self.objects.client.query(
+            resource=CreditNotePdf.objects.resource % self.id.value,
+            method=base.Client.METHOD_GET
+        )[CreditNotePdf.objects.object_name]
+        return CreditNotePdf(**result)
+
+
+class CreditNotePdf(base.Model):
+    id = fields.IntegerField(read_only=True)
+    created = fields.DateTimeField(read_only=True)
+    credit_note_id = fields.IntegerField(read_only=True)
+    filename = fields.StringField(read_only=True)
+    mimetype = fields.StringField(read_only=True)
+    filesize = fields.IntegerField(read_only=True)
+    base64file = fields.StringField(read_only=True)
+
+    class Meta:
+        resource = 'credit-notes/%s/pdf'
+        object_name = 'pdf'
 
 
 class CreditNoteItem(base.Model):
