@@ -296,13 +296,21 @@ class Model(six.with_metaclass(ModelBase)):
         filters = ()
 
     def __init__(self, **kwargs):
+        self.additional_data = {}
+
+        # initialize fields
         self.fields = copy.deepcopy(self._fields)
         for name in self.fields:
             field = self.fields[name]
             if not field.name:
                 field.name = name
-            if kwargs.get(name):
-                field.init_value(kwargs.get(name))
+
+        # set data
+        for name, value in kwargs.items():
+            if name in self.fields:
+                self.fields[name].init_value(value)
+            else:
+                self.additional_data[name] = value
 
     def __setattr__(self, name, value):
         if hasattr(self, 'fields') and name in self.fields:
@@ -351,6 +359,11 @@ class Model(six.with_metaclass(ModelBase)):
                 dirty[field.name] = field.to_json()
             if field.name == 'id':
                 dataset_id = field.value
+
+        # append additional data
+        for key, value in self.additional_data.items():
+            data[key] = value
+        self.additional_data = {}
 
         # create dataset
         if dataset_id == Field.EMPTY_VALUE:
