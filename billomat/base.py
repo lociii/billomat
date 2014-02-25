@@ -410,19 +410,17 @@ class Field(object):
     EMPTY_VALUE = ''
 
     def __init__(
-        self, default=None, read_only=False, choices=None,
+        self, default=None, read_only=False,
         required=False, field_name=None
     ):
         self.name = field_name or None
         self.default = default or self.EMPTY_VALUE
         self.value = self.default
         self.read_only = read_only
-        self.choices = choices
         self.required = required
         self.is_dirty = False
 
     def init_value(self, value):
-        self._check_choices(value)
         self.value = self.to_python(value)
 
     def set_value(self, value):
@@ -430,19 +428,11 @@ class Field(object):
             raise BillomatReadOnlyException(
                 'field is read only: %s' % self.name
             )
-        self._check_choices(value)
 
         value = self.to_python(value)
         if value != self.value:
             self.value = value
             self.is_dirty = True
-
-    def _check_choices(self, value):
-        if self.choices is not None:
-            if value not in self.choices:
-                raise BillomatValidationException(
-                    'invalid value %s' % value
-                )
 
     def to_python(self, value):
         raise NotImplemented()

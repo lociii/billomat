@@ -39,11 +39,7 @@ class ArticleProperty(base.Model):
     id = fields.IntegerField(read_only=True)
     account_id = fields.IntegerField(read_only=True)
     name = fields.StringField()
-    type = fields.StringField(
-        choices=(
-            'TEXTFIELD', 'TEXTAREA', 'CHECKBOX',
-        ),
-    )
+    type = fields.StringField()
     default_value = fields.StringField()
     is_nvl = fields.BooleanField()
 
@@ -105,49 +101,28 @@ class Client(base.Model):
     bank_swift = fields.StringField()
     bank_iban = fields.StringField()
     tax_rule = fields.StringField(
-        choices=(
-            'TAX', 'NO_TAX', 'COUNTRY',
-        ),
         default='COUNTRY',
     )
     net_gross = fields.StringField(
-        choices=(
-            'NET', 'GROSS', 'SETTINGS',
-        ),
         default='SETTINGS',
     )
     discount_rate_type = fields.StringField(
-        choices=(
-            'SETTINGS', 'ABSOLUTE', 'RELATIVE',
-        ),
         default='SETTINGS',
     )
     discount_rate = fields.FloatField()
     discount_days_type = fields.StringField(
-        choices=(
-            'SETTINGS', 'ABSOLUTE', 'RELATIVE',
-        ),
         default='SETTINGS',
     )
     discount_days = fields.FloatField()
     due_days_type = fields.StringField(
-        choices=(
-            'SETTINGS', 'ABSOLUTE', 'RELATIVE',
-        ),
         default='SETTINGS',
     )
     due_days = fields.IntegerField()
     reminder_due_days_type = fields.StringField(
-        choices=(
-            'SETTINGS', 'ABSOLUTE', 'RELATIVE',
-        ),
         default='SETTINGS',
     )
     reminder_due_days = fields.IntegerField()
     offer_validity_days_type = fields.StringField(
-        choices=(
-            'SETTINGS', 'ABSOLUTE', 'RELATIVE',
-        ),
         default='SETTINGS',
     )
     offer_validity_days = fields.IntegerField()
@@ -183,16 +158,8 @@ class Recurring(base.Model):
     currency_code = fields.StringField()
     name = fields.StringField()
     cycle_number = fields.IntegerField()
-    cycle = fields.StringField(
-        choices=(
-            'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY',
-        )
-    )
-    action = fields.StringField(
-        choices=(
-            'CREATE', 'COMPLETE', 'EMAIL',
-        )
-    )
+    cycle = fields.StringField()
+    action = fields.StringField()
     hour = fields.IntegerField()
     start_date = fields.DateField()
     end_date = fields.DateField()
@@ -208,22 +175,14 @@ class Recurring(base.Model):
     note = fields.StringField()
     total_gross = fields.FloatField()
     total_net = fields.FloatField()
-    net_gross = fields.StringField(
-        choices=(
-            'NET', 'GROSS',
-        )
-    )
+    net_gross = fields.StringField()
     reduction = fields.StringField()
     total_gross_unreduced = fields.FloatField()
     total_net_unreduced = fields.FloatField()
     quote = fields.FloatField()
     ultimo = fields.IntegerField()
     label = fields.StringField()
-    supply_date_type = fields.StringField(
-        choices=(
-            'SUPPLY_DATE', 'DELIVERY_DATE', 'SUPPLY_TEXT', 'DELIVERY_TEXT',
-        )
-    )
+    supply_date_type = fields.StringField()
     supply_date = fields.StringField()
     email_sender = fields.StringField()
     email_subject = fields.StringField()
@@ -287,18 +246,10 @@ class Invoice(base.Model):
     invoice_number = fields.StringField(read_only=True)
     number = fields.IntegerField()
     number_pre = fields.StringField()
-    status = fields.StringField(
-        choices=(
-            'DRAFT', 'OPEN', 'OVERDUE', 'PAID', 'CANCELED',
-        )
-    )
+    status = fields.StringField()
     date = fields.DateField()
     supply_date = fields.StringField()
-    supply_date_type = fields.StringField(
-        choices=(
-            'SUPPLY_DATE', 'DELIVERY_DATE', 'SUPPLY_TEXT', 'DELIVERY_TEXT',
-        )
-    )
+    supply_date_type = fields.StringField()
     due_date = fields.DateField()
     due_days = fields.IntegerField()
     address = fields.StringField()
@@ -312,11 +263,7 @@ class Invoice(base.Model):
     note = fields.StringField()
     total_gross = fields.FloatField()
     total_net = fields.FloatField()
-    net_gross = fields.StringField(
-        choices=(
-            'NET', 'GROSS',
-        )
-    )
+    net_gross = fields.StringField()
     reduction = fields.StringField()
     total_gross_unreduced = fields.FloatField()
     total_net_unreduced = fields.FloatField()
@@ -408,17 +355,7 @@ class InvoiceComment(base.Model):
     invoice_id = fields.IntegerField()
     user_id = fields.IntegerField()
     comment = fields.StringField()
-    actionkey = fields.StringField(
-        choices=(
-            'COMMENT', 'CREATE', 'COPY', 'CREATE_FROM_OFFER',
-            'CREATE_FROM_RECURRING', 'STATUS', 'PAYMENT', 'PAYMENT_ERROR',
-            'DELETE_PAYMENT', 'MAIL', 'LETTER', 'FAX', 'SIGN', 'SIGN_MAIL',
-            'CANCEL', 'ERROR_MAIL', 'CREATE_CREDIT_NOTE', 'REMINDER_CREATE',
-            'REMINDER_STATUS', 'REMINDER_MAIL', 'REMINDER_ERROR_MAIL',
-            'REMINDER_LETTER', 'REMINDER_FAX', 'REMINDER_SIGN',
-            'REMINDER_SIGN_MAIL', 'REMINDER_CANCEL', 'REMINDER_DELETE',
-        )
-    )
+    actionkey = fields.StringField()
 
     class Meta:
         resource = 'invoice-comments'
@@ -438,13 +375,7 @@ class InvoicePayment(base.Model):
     date = fields.DateField()
     amount = fields.FloatField()
     comment = fields.StringField()
-    type = fields.StringField(
-        choices=(
-            'CREDIT_NOTE', 'BANK_CARD', 'BANK_TRANSFER',
-            'DEBIT', 'CASH', 'CHECK', 'PAYPAL', 'CREDIT_CARD',
-            'COUPON', 'MISC',
-        )
-    )
+    type = fields.StringField()
 
     class Meta:
         resource = 'invoice-payments'
@@ -465,17 +396,10 @@ class CreditNote(base.Model):
     client_id = fields.IntegerField()
     contact_id = fields.IntegerField()
     created = fields.DateTimeField(read_only=True)
-    credit_note_number = fields.StringField(
-        read_only=True,
-        field_name='credit',
-    )
+    credit_note_number = fields.StringField(read_only=True)
     number = fields.IntegerField()
     number_pre = fields.StringField()
-    status = fields.StringField(
-        choices=(
-            'DRAFT', 'OPEN', 'PAID',
-        )
-    )
+    status = fields.StringField()
     date = fields.DateField()
     address = fields.StringField()
     title = fields.StringField()
@@ -484,11 +408,7 @@ class CreditNote(base.Model):
     note = fields.StringField()
     total_gross = fields.FloatField()
     total_net = fields.FloatField()
-    net_gross = fields.StringField(
-        choices=(
-            'NET', 'GROSS',
-        )
-    )
+    net_gross = fields.StringField()
     reduction = fields.StringField()
     total_gross_unreduced = fields.FloatField()
     total_net_unreduced = fields.FloatField()
@@ -585,11 +505,7 @@ class CreditNoteTag(base.Model):
 class Reminder(base.Model):
     id = fields.IntegerField(read_only=True)
     created = fields.DateTimeField(read_only=True)
-    status = fields.StringField(
-        choices=(
-            'DRAFT', 'OPEN', 'OVERDUE', 'PAID', 'CANCELED',
-        )
-    )
+    status = fields.StringField()
     invoice_id = fields.IntegerField()
     contact_id = fields.IntegerField()
     reminder_text_id = fields.IntegerField()
