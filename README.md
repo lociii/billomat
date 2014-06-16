@@ -12,6 +12,10 @@ from billomat.base import Client
 Client.api_name = 'apiname'
 Client.api_key = 'apikey'
 
+# set optional app-id and -secret
+Client.app_id = 'app_id'
+Client.app_secret = 'app_secret'
+
 articles = models.Article.objects.all()
 for article in articles:
     print unicode(article.title)

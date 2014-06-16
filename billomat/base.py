@@ -38,6 +38,8 @@ class Client(object):
 
     api_name = None
     api_key = None
+    app_id = None
+    app_secret = None
 
     _URL = 'https://%(api_name)s.billomat.net/api/%(resource)s'
 
@@ -49,16 +51,21 @@ class Client(object):
             'api_name': self.api_name,
             'resource': resource,
         }
+        headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-BillomatApiKey': self.api_key,
+        }
+
+        if self.app_id and self.app_secret:
+            headers['X-AppId'] = self.app_id
+            headers['X-AppSecret'] = self.app_secret
 
         try:
             request = requests.Request(
                 method=method,
                 url=url,
-                headers={
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-BillomatApiKey': self.api_key,
-                },
+                headers=headers,
                 params=params,
                 data=json.dumps(data),
             )
