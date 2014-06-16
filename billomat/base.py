@@ -455,3 +455,13 @@ class Field(object):
 
     class Meta:
         abstract = True
+
+
+try:
+    from django.conf import settings
+    Client.api_name = getattr(settings, 'BILLOMAT_API_NAME', None)
+    Client.api_key = getattr(settings, 'BILLOMAT_API_KEY', None)
+    Client.app_id = getattr(settings, 'BILLOMAT_APP_ID', None)
+    Client.app_secret = getattr(settings, 'BILLOMAT_APP_SECRET', None)
+except ImportError:
+    pass
