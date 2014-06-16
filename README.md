@@ -5,6 +5,7 @@ The syntax of the client is inspired by the great [Django ORM](https://docs.djan
 
 Example usage
 --------------
+
 ```python
 from billomat import models
 from billomat.base import Client
@@ -32,6 +33,23 @@ article = models.Article.objects.create(
 )
 article.delete()
 ```
+
+Django support
+---------------
+Automatic client configuration by django config is supported
+
+```python
+BILLOMAT_API_NAME = 'aaa'
+BILLOMAT_API_KEY = 'bbb'
+BILLOMAT_APP_ID = 'ccc'
+BILLOMAT_APP_SECRET = 'ddd'
+```
+
+The client sends 3 django signals:
+
+- billomatclient_request, send before the request
+- billomatclient_response, send after the request containing the response
+- billomatclient_error, send after a request error containing the exception
 
 License
 --------

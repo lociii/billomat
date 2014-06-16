@@ -29,6 +29,31 @@ class BillomatReadOnlyException(BillomatException):
     pass
 
 
+# define django signals
+billomatclient_request = None
+billomatclient_response = None
+billomatclient_error = None
+try:
+    import django.dispatch
+    billomatclient_request = django.dispatch.Signal(
+        providing_args=[
+            'method', 'url', 'headers', 'params', 'data'
+        ]
+    )
+    billomatclient_response = django.dispatch.Signal(
+        providing_args=[
+            'method', 'url', 'headers', 'params', 'data', 'response'
+        ]
+    )
+    billomatclient_error = django.dispatch.Signal(
+        providing_args=[
+            'method', 'url', 'headers', 'params', 'data', 'exception'
+        ]
+    )
+except ImportError:
+    pass
+
+
 class Client(object):
     METHOD_GET = 'GET'
     METHOD_POST = 'POST'
@@ -61,6 +86,16 @@ class Client(object):
             headers['X-AppId'] = self.app_id
             headers['X-AppSecret'] = self.app_secret
 
+        if billomatclient_request:
+            billomatclient_request.send(
+                sender=self.__class__,
+                method=method,
+                url=url,
+                headers=headers,
+                params=params,
+                data=data,
+            )
+
         try:
             request = requests.Request(
                 method=method,
@@ -74,7 +109,29 @@ class Client(object):
             s = requests.Session()
             response = s.send(r)
         except BaseException, e:
+            if billomatclient_error:
+                billomatclient_error.send(
+                    sender=self.__class__,
+                    method=method,
+                    url=url,
+                    headers=headers,
+                    params=params,
+                    data=data,
+                    exception=e,
+                )
+
             raise BillomatRequestException('request failed: %s' % str(e))
+
+        if billomatclient_response:
+            billomatclient_response.send(
+                sender=self.__class__,
+                method=method,
+                url=url,
+                headers=headers,
+                params=params,
+                data=data,
+                response=response,
+            )
 
         if response.text == '':
             return {}
