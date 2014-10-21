@@ -5,7 +5,7 @@ import requests
 import six
 
 
-class BillomatException(BaseException):
+class BillomatException(Exception):
     pass
 
 
@@ -108,7 +108,7 @@ class Client(object):
 
             s = requests.Session()
             response = s.send(r)
-        except BaseException, e:
+        except Exception, e:
             if billomatclient_error:
                 billomatclient_error.send(
                     sender=self.__class__,

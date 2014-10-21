@@ -11,7 +11,7 @@ FIXTURE_OBJECT = {'a': 'b'}
 
 @all_requests
 def billomat_mock_exception(url, request):
-    raise BaseException('Failed')
+    raise Exception('Failed')
 
 
 @all_requests
