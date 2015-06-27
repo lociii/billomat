@@ -19,7 +19,7 @@ class DateTimeField(base.Field):
         if isinstance(value, datetime.datetime):
             return value
 
-        if value is None:
+        if value is None or value == '':
             return None
         try:
             return parse(value)
@@ -40,7 +40,7 @@ class DateField(base.Field):
         if isinstance(value, datetime.date):
             return value
 
-        if value is None:
+        if value is None or value == '':
             return None
         try:
             return parse(value).date()
