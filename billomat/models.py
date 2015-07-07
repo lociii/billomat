@@ -305,6 +305,12 @@ class Invoice(base.Model):
         )[InvoicePdf.objects.object_name]
         return InvoicePdf(**result)
 
+    def complete(self):
+        self.objects.client.query(
+            resource='invoices/%s/complete' % self.id.value,
+            method=base.Client.METHOD_PUT,
+        )
+
 
 class InvoicePdf(base.Model):
     id = fields.IntegerField(read_only=True)
