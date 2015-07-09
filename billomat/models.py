@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from . import base
 from . import fields
+import json
 
 
 class Article(base.Model):
@@ -309,6 +310,7 @@ class Invoice(base.Model):
         self.objects.client.query(
             resource='invoices/%s/complete' % self.id.value,
             method=base.Client.METHOD_PUT,
+            data=json.dumps({'complete': {'template_id': None}})
         )
 
 
