@@ -32,7 +32,9 @@ class DateTimeField(base.Field):
             )
 
     def to_json(self):
-        return self.value.strftime('%Y-%m-%dT%H%i%s')
+        if self.value:
+            return self.value.strftime('%Y-%m-%dT%H%i%s')
+        return None
 
 
 class DateField(base.Field):
@@ -53,7 +55,9 @@ class DateField(base.Field):
             )
 
     def to_json(self):
-        return self.value.strftime('%Y-%m-%d')
+        if self.value:
+            return self.value.strftime('%Y-%m-%d')
+        return None
 
 
 class EmailField(StringField):
