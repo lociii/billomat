@@ -306,11 +306,16 @@ class Invoice(base.Model):
         )[InvoicePdf.objects.object_name]
         return InvoicePdf(**result)
 
-    def complete(self):
+    def complete(self, template_id=None):
+        if template_id:
+            data = {'complete': {'template_id': template_id}}
+        else:
+            data = {'complete': {}}
+
         self.objects.client.query(
             resource='invoices/%s/complete' % self.id.value,
             method=base.Client.METHOD_PUT,
-            data=json.dumps({'complete': {'template_id': None}})
+            data=data,
         )
 
 
