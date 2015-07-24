@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name='billomat',
     packages=find_packages(),
-    version='0.1.20',
+    version='0.1.21',
     description='billomat.com API client',
     author='Jens Nistler',
     author_email='opensource@jensnistler.de',

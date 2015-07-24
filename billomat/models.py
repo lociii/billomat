@@ -318,6 +318,18 @@ class Invoice(base.Model):
             data=data,
         )
 
+    def cancel(self):
+        self.objects.client.query(
+            resource='invoices/%s/cancel' % self.id.value,
+            method=base.Client.METHOD_PUT,
+        )
+
+    def uncancel(self):
+        self.objects.client.query(
+            resource='invoices/%s/uncancel' % self.id.value,
+            method=base.Client.METHOD_PUT,
+        )
+
 
 class InvoicePdf(base.Model):
     id = fields.IntegerField(read_only=True)
