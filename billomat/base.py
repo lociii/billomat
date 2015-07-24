@@ -284,7 +284,7 @@ class ObjectManager(object):
                     )
                 )
 
-    def create(self, **kwargs):
+    def create(self, *args, **kwargs):
         model = self._model(**kwargs)
         model.save()
         return model
@@ -292,7 +292,7 @@ class ObjectManager(object):
     def all(self):
         return self._get_queryset()
 
-    def get(self, **kwargs):
+    def get(self, *args, **kwargs):
         self.validate_kwargs(kwargs)
         qs = self._get_queryset().filter(**kwargs)
         if len(qs) > 1:
@@ -300,7 +300,7 @@ class ObjectManager(object):
 
         return next(iter(qs))
 
-    def filter(self, **kwargs):
+    def filter(self, *args, **kwargs):
         self.validate_kwargs(kwargs)
         return self._get_queryset().filter(**kwargs)
 
@@ -409,7 +409,7 @@ class Model(six.with_metaclass(ModelBase)):
         message = sorted(message)
         return "\n".join(message)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         # prepare data
         dirty = {}
         data = {}
@@ -458,7 +458,7 @@ class Model(six.with_metaclass(ModelBase)):
                     # ignore additional fields from api
                     pass
 
-    def delete(self):
+    def delete(self, *args, **kwargs):
         dataset_id = self.fields['id'].value
         if dataset_id == Field.EMPTY_VALUE:
             raise BillomatException('cannot delete unsaved dataset')
