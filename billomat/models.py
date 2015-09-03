@@ -330,6 +330,13 @@ class Invoice(base.Model):
             method=base.Client.METHOD_PUT,
         )
 
+    def send_email(self, recipient):
+        self.objects.client.query(
+            resource='invoices/%s/email' % self.id.value,
+            method=base.Client.METHOD_POST,
+            data={'recipients': {'to': recipient}}
+        )
+
 
 class InvoicePdf(base.Model):
     id = fields.IntegerField(read_only=True)
