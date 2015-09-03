@@ -334,7 +334,7 @@ class Invoice(base.Model):
         self.objects.client.query(
             resource='invoices/%s/email' % self.id.value,
             method=base.Client.METHOD_POST,
-            data={'recipients': {'to': recipient}}
+            data={'email': {'recipients': {'to': recipient}}}
         )
 
 
