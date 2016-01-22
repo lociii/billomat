@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name='billomat',
     packages=find_packages(),
-    version='0.1.24',
+    version='0.1.25',
     description='billomat.com API client',
     author='Jens Nistler',
     author_email='opensource@jensnistler.de',
@@ -21,13 +21,7 @@ setup(
         'Operating System :: OS Independent',
         'Topic :: Software Development',
     ],
-    install_requires=[
-        'requests==2.1.0',
-        'six==1.4.1',
-        'python-dateutil==2.2',
-        'httmock==1.0.7',
-        'mock==1.0.1',
-    ],
+    install_requires=[line.rstrip() for line in open('requirements.txt')],
     include_package_data=True,
     long_description=open('README.md').read()
 )
