@@ -51,6 +51,8 @@ The client sends 3 django signals:
 - billomatclient_response, send after the request containing the response
 - billomatclient_error, send after a request error containing the exception
 
+Each signal sends a request_id which is a unique identifier (uuid4) for each request to track the status along the signal flow.
+
 License
 --------
 [MIT](https://github.com/lociii/billomat/blob/master/LICENSE.md)

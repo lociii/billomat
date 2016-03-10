@@ -3,6 +3,7 @@ import copy
 import json
 import requests
 import six
+from uuid import uuid4
 
 
 class BillomatException(Exception):
@@ -35,21 +36,12 @@ billomatclient_response = None
 billomatclient_error = None
 try:
     import django.dispatch
-    billomatclient_request = django.dispatch.Signal(
-        providing_args=[
-            'method', 'url', 'headers', 'params', 'data'
-        ]
-    )
-    billomatclient_response = django.dispatch.Signal(
-        providing_args=[
-            'method', 'url', 'headers', 'params', 'data', 'response'
-        ]
-    )
-    billomatclient_error = django.dispatch.Signal(
-        providing_args=[
-            'method', 'url', 'headers', 'params', 'data', 'exception'
-        ]
-    )
+    billomatclient_request = django.dispatch.Signal(providing_args=['method', 'url', 'headers', 'params', 'data',
+                                                                    'request_id'])
+    billomatclient_response = django.dispatch.Signal(providing_args=['method', 'url', 'headers', 'params', 'data',
+                                                                     'response', 'request_id'])
+    billomatclient_error = django.dispatch.Signal(providing_args=['method', 'url', 'headers', 'params', 'data',
+                                                                  'exception', 'request_id'])
 except ImportError:
     pass
 
@@ -69,6 +61,7 @@ class Client(object):
     _URL = 'https://%(api_name)s.billomat.net/api/%(resource)s'
 
     def query(self, resource, params=None, data=None, method=METHOD_GET):
+        request_id = uuid4()
         params = params or {}
         data = data or {}
 
@@ -87,51 +80,25 @@ class Client(object):
             headers['X-AppSecret'] = self.app_secret
 
         if billomatclient_request:
-            billomatclient_request.send(
-                sender=self.__class__,
-                method=method,
-                url=url,
-                headers=headers,
-                params=params,
-                data=data,
-            )
+            billomatclient_request.send(sender=self.__class__, method=method, url=url, headers=headers, params=params,
+                                        data=data, request_id=request_id)
 
         try:
-            request = requests.Request(
-                method=method,
-                url=url,
-                headers=headers,
-                params=params,
-                data=json.dumps(data),
-            )
+            request = requests.Request(method=method, url=url, headers=headers, params=params, data=json.dumps(data))
             r = request.prepare()
 
             s = requests.Session()
             response = s.send(r)
         except Exception, e:
             if billomatclient_error:
-                billomatclient_error.send(
-                    sender=self.__class__,
-                    method=method,
-                    url=url,
-                    headers=headers,
-                    params=params,
-                    data=data,
-                    exception=e,
-                )
+                billomatclient_error.send(sender=self.__class__, method=method, url=url, headers=headers, params=params,
+                                          data=data, exception=e, request_id=request_id)
 
             raise BillomatRequestException('request failed: %s' % str(e))
 
         if billomatclient_response:
-            billomatclient_response.send(
-                sender=self.__class__,
-                method=method,
-                url=url,
-                headers=headers,
-                params=params,
-                data=data,
-                response=response,
-            )
+            billomatclient_response.send(sender=self.__class__, method=method, url=url, headers=headers, params=params,
+                                         data=data, response=response, request_id=request_id)
 
         if response.text == '':
             return {}
