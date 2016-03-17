@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from . import base
 from . import fields
-import json
+from . import mixins
 
 
 class Article(base.Model):
@@ -239,7 +239,7 @@ class RecurringItem(base.Model):
         )
 
 
-class Invoice(base.Model):
+class Invoice(mixins.StatusAndEmailMixin, base.Model):
     id = fields.IntegerField(read_only=True)
     client_id = fields.IntegerField()
     contact_id = fields.IntegerField()
@@ -278,6 +278,8 @@ class Invoice(base.Model):
     recurring_id = fields.IntegerField()
     payment_types = fields.ListOfFloatField()
 
+    endpoint_name = 'invoices'
+
     class Meta:
         resource = 'invoices'
         object_name = 'invoice'
@@ -305,37 +307,6 @@ class Invoice(base.Model):
             method=base.Client.METHOD_GET
         )[InvoicePdf.objects.object_name]
         return InvoicePdf(**result)
-
-    def complete(self, template_id=None):
-        if template_id:
-            data = {'complete': {'template_id': template_id}}
-        else:
-            data = {'complete': {}}
-
-        self.objects.client.query(
-            resource='invoices/%s/complete' % self.id.value,
-            method=base.Client.METHOD_PUT,
-            data=data,
-        )
-
-    def cancel(self):
-        self.objects.client.query(
-            resource='invoices/%s/cancel' % self.id.value,
-            method=base.Client.METHOD_PUT,
-        )
-
-    def uncancel(self):
-        self.objects.client.query(
-            resource='invoices/%s/uncancel' % self.id.value,
-            method=base.Client.METHOD_PUT,
-        )
-
-    def send_email(self, recipient):
-        self.objects.client.query(
-            resource='invoices/%s/email' % self.id.value,
-            method=base.Client.METHOD_POST,
-            data={'email': {'recipients': {'to': recipient}}}
-        )
 
 
 class InvoicePdf(base.Model):
@@ -534,7 +505,7 @@ class CreditNoteTag(base.Model):
         )
 
 
-class Reminder(base.Model):
+class Reminder(mixins.StatusAndEmailMixin, base.Model):
     id = fields.IntegerField(read_only=True)
     created = fields.DateTimeField(read_only=True)
     status = fields.StringField()
@@ -551,6 +522,8 @@ class Reminder(base.Model):
     due_date = fields.DateField()
     total_gross = fields.FloatField()
     is_old = fields.IntegerField(read_only=True)
+
+    endpoint_name = 'reminders'
 
     class Meta:
         resource = 'reminders'
