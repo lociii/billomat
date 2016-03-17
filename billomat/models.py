@@ -543,3 +543,27 @@ class Reminder(mixins.StatusAndEmailMixin, base.Model):
             'note',
             'tags',
         )
+
+    def get_pdf(self):
+        assert isinstance(self.objects, base.ObjectManager)
+
+        result = self.objects.client.query(
+            resource=ReminderPdf.objects.resource % self.id.value,
+            method=base.Client.METHOD_GET
+        )[ReminderPdf.objects.object_name]
+        return ReminderPdf(**result)
+
+
+class ReminderPdf(base.Model):
+    id = fields.IntegerField(read_only=True)
+    created = fields.DateTimeField(read_only=True)
+    reminder_id = fields.IntegerField(read_only=True)
+    filename = fields.StringField(read_only=True)
+    mimetype = fields.StringField(read_only=True)
+    filesize = fields.IntegerField(read_only=True)
+    base64file = fields.StringField(read_only=True)
+
+    class Meta:
+        resource = 'reminders/%s/pdf'
+        object_name = 'pdf'
+        filters = ()
