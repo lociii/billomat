@@ -1,3 +1,5 @@
+![Travis CI build status](https://travis-ci.org/lociii/billomat.svg)
+
 Python client for the [billomat.com](http://www.billomat.com) [API](http://www.billomat.com/en/api/)
 =====================================================================================================
 
