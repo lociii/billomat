@@ -89,7 +89,7 @@ class Client(object):
 
             s = requests.Session()
             response = s.send(r)
-        except Exception, e:
+        except Exception as e:
             if billomatclient_error:
                 billomatclient_error.send(sender=self.__class__, method=method, url=url, headers=headers, params=params,
                                           data=data, exception=e, request_id=request_id)
