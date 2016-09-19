@@ -3,6 +3,7 @@ import copy
 import json
 import requests
 import six
+import time
 from uuid import uuid4
 
 
@@ -57,6 +58,7 @@ class Client(object):
     api_key = None
     app_id = None
     app_secret = None
+    sleep = 0
 
     _URL = 'https://%(api_name)s.billomat.net/api/%(resource)s'
 
@@ -89,6 +91,9 @@ class Client(object):
 
             s = requests.Session()
             response = s.send(r)
+
+            # optional sleep to avoid rate limit exceedance - use settings.BILLOMAT_CLIENT_SLEEP
+            time.sleep(self.sleep)
         except Exception as e:
             if billomatclient_error:
                 billomatclient_error.send(sender=self.__class__, method=method, url=url, headers=headers, params=params,
@@ -487,5 +492,6 @@ try:
     Client.api_key = getattr(settings, 'BILLOMAT_API_KEY', None)
     Client.app_id = getattr(settings, 'BILLOMAT_APP_ID', None)
     Client.app_secret = getattr(settings, 'BILLOMAT_APP_SECRET', None)
+    Client.sleep = getattr(settings, 'BILLOMAT_CLIENT_SLEEP', 0)
 except ImportError:
     pass
