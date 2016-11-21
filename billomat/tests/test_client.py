@@ -56,13 +56,13 @@ class TestClient(unittest.TestCase):
 
     def testQueryReturnsEmptyList(self):
         with HTTMock(billomat_mock_return_empty):
-            client = base.Client()
+            client = self.get_client()
             result = client.query('test')
             self.assertEqual(result, {})
 
     def testQueryThrowsExceptionOnNoneResponse(self):
         with HTTMock(billomat_mock_return_none):
-            client = base.Client()
+            client = self.get_client()
             self.assertRaisesRegexp(
                 base.BillomatRequestException,
                 'null.*',
@@ -72,7 +72,7 @@ class TestClient(unittest.TestCase):
 
     def testQueryThrowsExceptionWithMessage(self):
         with HTTMock(billomat_mock_return_error):
-            client = base.Client()
+            client = self.get_client()
             self.assertRaisesRegexp(
                 base.BillomatRequestException,
                 FIXTURE_MESSAGE,
@@ -82,7 +82,7 @@ class TestClient(unittest.TestCase):
 
     def testQueryThrowsExceptionOnInvalidResponse(self):
         with HTTMock(billomat_mock_return_malformed):
-            client = base.Client()
+            client = self.get_client()
             self.assertRaisesRegexp(
                 base.BillomatRequestException,
                 'malformed.*',
@@ -92,9 +92,14 @@ class TestClient(unittest.TestCase):
 
     def testQueryOk(self):
         with HTTMock(billomat_mock_ok):
-            client = base.Client()
+            client = self.get_client()
             result = client.query('test')
             self.assertEqual(result, FIXTURE_OBJECT)
+
+    def get_client(self):
+        client = base.Client()
+        client.api_key = ''
+        return client
 
 
 def main():
