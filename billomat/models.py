@@ -379,6 +379,7 @@ class InvoicePayment(base.Model):
     amount = fields.FloatField()
     comment = fields.StringField()
     type = fields.StringField()
+    transaction_purpose = fields.StringField()
 
     class Meta:
         resource = 'invoice-payments'
