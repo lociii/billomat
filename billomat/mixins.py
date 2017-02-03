@@ -33,11 +33,14 @@ class CancelMixin(object):
 
 
 class SendEmailMixin(object):
-    def send_email(self, recipient):
+    def send_email(self, recipient, email_template_id=None):
+        email_data = {'recipients': {'to': recipient}}
+        if email_template_id:
+            email_data['email_template_id'] = email_template_id
         self.objects.client.query(
             resource='%s/%s/email' % (self.endpoint_name, self.id.value),
             method=base.Client.METHOD_POST,
-            data={'email': {'recipients': {'to': recipient}}}
+            data={'email': email_data}
         )
 
 
