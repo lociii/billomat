@@ -1,5 +1,12 @@
 [![Travis CI build status](https://travis-ci.org/lociii/billomat.svg)](https://travis-ci.org/lociii/billomat)
 
+Deprecation notice
+==================
+
+This library is unmaintained!
+My employer stopped using billomat services. Therefore no fix or update will be done on this project anymore.
+If you're interested in taking over maintenance, let me know.
+
 Python client for the [billomat.com](http://www.billomat.com) [API](http://www.billomat.com/en/api/)
 =====================================================================================================
 
